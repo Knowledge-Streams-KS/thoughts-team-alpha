@@ -275,10 +275,6 @@ class myProfile_detail(LoginRequiredMixin,DetailView):
     login_url = reverse_lazy("login")
 
 
-# all users list
-
-class ListProfile(ListView):
-    model = UserProfile
 
 # all users details view
 
