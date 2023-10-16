@@ -74,6 +74,7 @@ def signup(request):
             messages.error(request, "Passwords do not match.")
         else:
             #Save password securely
+            # create_user convert password into hashes, ensure the securely store in the DB
             user_signup = User.objects.create_user(username=username, email=email, password=password, first_name= first_name, last_name=last_name)
             user_signup.is_active = True
             user_signup.save()
@@ -92,6 +93,7 @@ def user_login(request):
         password = request.POST["pswd"]
         user = authenticate(request, username=username, password=password)     
         
+        # if user already exist , then login
         if user is not None:
             login(request, user)
             fname = user.first_name
@@ -117,6 +119,7 @@ def user_logout(request):
 
 # CRUD operations
 
+#only loggedin user can access this specific userprofile
 class Profile(LoginRequiredMixin, CreateView):
     model = UserProfile
     fields = "__all__"
@@ -124,6 +127,7 @@ class Profile(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('DetailProfile', args=[self.object.user.pk])    
     
+    #save the form with additional functionalities
     def form_valid(self, form):
         already_profile = UserProfile.objects.filter(user=self.request.user).first()
         if already_profile:
@@ -238,8 +242,9 @@ class DeleteProfile(LoginRequiredMixin, DeleteView):
 
 
 
-class ListProfile(ListView):
+class ListProfile(LoginRequiredMixin,ListView):
     model = UserProfile
+    login_url = "/users/login/"
     success_urls = "/users/Success/"
 
 
@@ -258,6 +263,28 @@ class DetailProfile(DetailView):
 class Success(TemplateView):
     template_name = "users/success.html/"
 
+# logged in user profile detail
+
+class myProfile_detail(LoginRequiredMixin,DetailView):
+    model = UserProfile
+    template_name = "users/userprofile_detail.html"
+
+    def get_object(self,queryset=None):
+        return UserProfile.objects.get(user=self.request.user)
+
+    login_url = reverse_lazy("login")
 
 
+# all users list
 
+class ListProfile(ListView):
+    model = UserProfile
+
+# all users details view
+
+class DetailProfile(LoginRequiredMixin,DetailView):
+    model = UserProfile
+
+    login_url = reverse_lazy("login")
+
+    

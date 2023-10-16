@@ -10,6 +10,8 @@ urlpatterns = [
     #path("ConfirmDeleteProfie/",Confirm_delete_profile.as_view(),name="ConfirmDeleteProfie"),
 
     path("ChangePass/", Changepass.as_view(), name="ChangePassword"),
+    # logged in user profile detail
+    path("myprofile/<pk>/",myProfile_detail.as_view(),name="myProfile_detail"),
 
     # CRUD
     path("profile/",Profile.as_view(), name="Profile"),
@@ -17,5 +19,5 @@ urlpatterns = [
     path("DeleteProfile/<pk>",DeleteProfile.as_view(),name="DeleteProfile"),
     path("ListProfile/",ListProfile.as_view(), name="ListProfile"),
     path("DetailProfile/<pk>",DetailProfile.as_view(), name="DetailProfile"),
-
+    
 ]

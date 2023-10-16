@@ -16,6 +16,15 @@ urlpatterns = [
     path("SuccessComment/",SuccessComment.as_view(),name="SuccessComment"),
     # home page
     path("home/", Home.as_view(), name="Home"),
+    # about page
+    path("about/", About.as_view(), name="About"),
+    # search url
+    path("search/",search, name="search"),
+    # share
+    path("share_thought/",share_form,name="ShareForm"),
+
+    # my-thought
+    path("mythoughts/",My_thoughts.as_view(),name="MyThoughts"),
 
 
 ]
