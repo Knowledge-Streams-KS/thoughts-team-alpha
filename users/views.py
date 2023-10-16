@@ -248,9 +248,10 @@ class ListProfile(LoginRequiredMixin,ListView):
     success_urls = "/users/Success/"
 
 
-class DetailProfile(DetailView):
+class DetailProfile(LoginRequiredMixin,DetailView):
     model = UserProfile
-    
+    login_url = reverse_lazy("login")
+
     def get_success_url(self):
         return reverse('DetailProfile', args=[self.object.user.pk])
     
@@ -276,11 +277,5 @@ class myProfile_detail(LoginRequiredMixin,DetailView):
 
 
 
-# all users details view
-
-class DetailProfile(LoginRequiredMixin,DetailView):
-    model = UserProfile
-
-    login_url = reverse_lazy("login")
 
     
